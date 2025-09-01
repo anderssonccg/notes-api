@@ -32,3 +32,36 @@ export const getNoteById = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const createNote = async (req, res) => {
+  const {
+    title,
+    description,
+    isImportant,
+    colorId,
+    backgroundId,
+    fontId,
+    tagId,
+    userId,
+  } = req.body;
+  try {
+    if (!title) {
+      return res.status(400).json("El titulo no puede estar vacio");
+    }
+    const newNote = await prisma.note.create({
+      data: {
+        title,
+        description,
+        isImportant,
+        colorId,
+        backgroundId,
+        fontId,
+        tagId,
+        userId,
+      },
+    });
+    return res.status(201).json(newNote);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
