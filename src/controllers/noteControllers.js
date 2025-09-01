@@ -8,24 +8,27 @@ export const getNotes = async (req, res) => {
         tag: true,
       },
     });
-    res.json(notes);
+    return res.json(notes);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 };
 
 export const getNoteById = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   try {
     const note = await prisma.note.findUnique({
-      where: id,
+      where: {
+        id: parseInt(id),
+      },
       include: {
         user: true,
         tag: true,
       },
     });
-    res.json(note);
+    if (!note) return res.status(404).json({ error: "Nota inexsistente." });
+    return res.json(note);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 };
