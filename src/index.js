@@ -5,6 +5,7 @@ import { connect } from "./prismaClient.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import colorRoutes from "./routes/colorRoutes.js";
 import backgroundRoutes from "./routes/backgroundRoutes.js";
+import fontRoutes from "./routes/fontRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,7 @@ const PATH = "/api/v1";
 app.use(PATH + "/notes", noteRoutes);
 app.use(PATH + "/colors", colorRoutes);
 app.use(PATH + "/backgrounds", backgroundRoutes);
+app.use(PATH + "/fonts", fontRoutes);
 
 connect();
 
