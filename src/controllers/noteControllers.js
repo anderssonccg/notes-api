@@ -86,8 +86,72 @@ export const createNote = async (req, res) => {
           },
         },
       },
+      include: {
+        user: true,
+        tag: true,
+        color: true,
+        background: true,
+        font: true,
+      },
     });
     return res.status(201).json(newNote);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+export const updateNote = async (req, res) => {
+  const { id } = req.params;
+  const {
+    title,
+    description,
+    isImportant,
+    colorId,
+    backgroundId,
+    fontId,
+    tagName,
+  } = req.body;
+  try {
+    if (!title || title === "") {
+      return res.status(400).json({ error: "El titulo no puede estar vacio" });
+    }
+    const updatedNote = await prisma.note.update({
+      where: { id: parseInt(id) },
+      data: {
+        title,
+        description,
+        isImportant,
+        color: {
+          connect: {
+            id: colorId,
+          },
+        },
+        background: {
+          connect: {
+            id: backgroundId,
+          },
+        },
+        font: {
+          connect: {
+            id: fontId,
+          },
+        },
+        tag: {
+          connectOrCreate: {
+            where: { tagName },
+            create: { tagName },
+          },
+        },
+      },
+      include: {
+        user: true,
+        tag: true,
+        color: true,
+        background: true,
+        font: true,
+      },
+    });
+    return res.status(201).json(updatedNote);
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
