@@ -6,6 +6,7 @@ import noteRoutes from "./routes/noteRoutes.js";
 import colorRoutes from "./routes/colorRoutes.js";
 import backgroundRoutes from "./routes/backgroundRoutes.js";
 import fontRoutes from "./routes/fontRoutes.js";
+import tagRoutes from "./routes/tagRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -19,6 +20,7 @@ app.use(PATH + "/notes", noteRoutes);
 app.use(PATH + "/colors", colorRoutes);
 app.use(PATH + "/backgrounds", backgroundRoutes);
 app.use(PATH + "/fonts", fontRoutes);
+app.use(PATH + "/tags", tagRoutes);
 
 connect();
 
