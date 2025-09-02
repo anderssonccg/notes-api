@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connect } from "./prismaClient.js";
 import noteRoutes from "./routes/noteRoutes.js";
+import colorRoutes from "./routes/colorRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -10,7 +11,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/v1/notes", noteRoutes);
+const PATH = "/api/v1";
+
+app.use(PATH + "/notes", noteRoutes);
+app.use(PATH + "/colors", colorRoutes);
 
 connect();
 
