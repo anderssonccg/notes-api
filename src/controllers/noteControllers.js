@@ -23,6 +23,9 @@ export const getNotes = async (req, res) => {
           },
         ],
       },
+      orderBy: {
+        isImportant: "desc",
+      },
       include: {
         user: true,
         tag: true,
