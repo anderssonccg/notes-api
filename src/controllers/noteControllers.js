@@ -1,13 +1,27 @@
 import prisma from "../prismaClient.js";
 
 export const getNotes = async (req, res) => {
-  const { tagName } = req.query;
+  const { tagName, search } = req.query;
   try {
     const notes = await prisma.note.findMany({
       where: {
         tag: {
-          tagName,
+          tagName: tagName,
         },
+        OR: [
+          {
+            description: {
+              contains: search ? search : "",
+              mode: "insensitive",
+            },
+          },
+          {
+            title: {
+              contains: search ? search : "",
+              mode: "insensitive",
+            },
+          },
+        ],
       },
       include: {
         user: true,
