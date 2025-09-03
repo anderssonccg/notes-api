@@ -1,8 +1,14 @@
 import prisma from "../prismaClient.js";
 
 export const getNotes = async (req, res) => {
+  const { tagName } = req.query;
   try {
     const notes = await prisma.note.findMany({
+      where: {
+        tag: {
+          tagName,
+        },
+      },
       include: {
         user: true,
         tag: true,
