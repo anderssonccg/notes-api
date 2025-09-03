@@ -76,8 +76,8 @@ export const createNote = async (req, res) => {
         },
         tag: {
           connectOrCreate: {
-            where: { tagName },
-            create: { tagName },
+            where: { tagName: tagName === "" ? "all" : tagName },
+            create: { tagName: tagName === "" ? "all" : tagName },
           },
         },
         user: {
@@ -138,8 +138,8 @@ export const updateNote = async (req, res) => {
         },
         tag: {
           connectOrCreate: {
-            where: { tagName },
-            create: { tagName },
+            where: { tagName: tagName === "" ? "all" : tagName },
+            create: { tagName: tagName === "" ? "all" : tagName },
           },
         },
       },
