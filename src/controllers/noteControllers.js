@@ -99,8 +99,8 @@ export const createNote = async (req, res) => {
         },
         tag: {
           connectOrCreate: {
-            where: { tagName: tagName === "" ? "all" : tagName },
-            create: { tagName: tagName === "" ? "all" : tagName },
+            where: { tagName: tagName === "all" ? "" : tagName },
+            create: { tagName: tagName === "all" ? "" : tagName },
           },
         },
         user: {
@@ -183,7 +183,22 @@ export const updateNote = async (req, res) => {
 export const deleteNote = async (req, res) => {
   const { id } = req.params;
   try {
-    await prisma.note.delete({ where: { id: parseInt(id) } });
+    const noteDeleted = await prisma.note.delete({
+      where: { id: parseInt(id) },
+    });
+    const tag = await prisma.tag.findUnique({
+      where: { id: noteDeleted.tagId },
+      include: {
+        notes: true,
+      },
+    });
+    if (tag && tag.notes.length === 0 && tag.tagName !== "all") {
+      await prisma.tag.delete({
+        where: {
+          id: noteDeleted.tagId,
+        },
+      });
+    }
     return res.status(200).json({ message: "Nota eliminada correctamente" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
